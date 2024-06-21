@@ -1,0 +1,1763 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+        <link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>Halte Surabaya Kecamatan Genteng</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/L.Control.Layers.Tree.min.js"></script>
+        <script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="data/d_JaringanJalan_Fixed_1.js"></script>
+        <script src="data/d_Halte_Surabaya_2.js"></script>
+        <script src="data/Halte_Surabaya_atribut_3.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:false, maxZoom:28, minZoom:1
+        }).fitBounds([[-7.282735536457442,112.71446333938529],[-7.2415316635532285,112.77183164579026]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        // remove popup's row if "visible-with-data"
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        // add class to format popup if it contains media
+		function addClassToPopupIfMedia(content, popup) {
+			var tempDiv = document.createElement('div');
+			tempDiv.innerHTML = content;
+			if (tempDiv.querySelector('td img')) {
+				popup._contentNode.classList.add('media');
+					// Delay to force the redraw
+					setTimeout(function() {
+						popup.update();
+					}, 10);
+			} else {
+				popup._contentNode.classList.remove('media');
+			}
+		}
+        var title = new L.Control({'position':'topright'});
+        title.onAdd = function (map) {
+            this._div = L.DomUtil.create('div', 'info');
+            this.update();
+            return this._div;
+        };
+        title.update = function () {
+            this._div.innerHTML = '<h2>Halte Surabaya Kecamatan Genteng</h2>';
+        };
+        title.addTo(map);
+        var zoomControl = L.control.zoom({
+            position: 'topleft'
+        }).addTo(map);
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'feet',
+            secondaryLengthUnit: 'miles',
+            primaryAreaUnit: 'sqfeet',
+            secondaryAreaUnit: 'sqmiles'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0].innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0].className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_Positronretina_0');
+        map.getPane('pane_Positronretina_0').style.zIndex = 400;
+        var layer_Positronretina_0 = L.tileLayer('https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}@2x.png', {
+            pane: 'pane_Positronretina_0',
+            opacity: 1.0,
+            attribution: '<a href="https://cartodb.com/basemaps/">Map tiles by CartoDB, under CC BY 3.0. Data by OpenStreetMap, under ODbL.</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_Positronretina_0;
+        map.addLayer(layer_Positronretina_0);
+        function pop_d_JaringanJalan_Fixed_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['osm_id'] !== null ? autolinker.link(feature.properties['osm_id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['bridge'] !== null ? autolinker.link(feature.properties['bridge'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['tunnel'] !== null ? autolinker.link(feature.properties['tunnel'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['width'] !== null ? autolinker.link(feature.properties['width'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['highway'] !== null ? autolinker.link(feature.properties['highway'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['surface'] !== null ? autolinker.link(feature.properties['surface'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['railway'] !== null ? autolinker.link(feature.properties['railway'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['layer'] !== null ? autolinker.link(feature.properties['layer'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['oneway'] !== null ? autolinker.link(feature.properties['oneway'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>name</strong><br />' + (feature.properties['name'] !== null ? autolinker.link(feature.properties['name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['smoothness'] !== null ? autolinker.link(feature.properties['smoothness'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_d_JaringanJalan_Fixed_1_0() {
+            return {
+                pane: 'pane_d_JaringanJalan_Fixed_1',
+                opacity: 1,
+                color: 'rgba(0,178,227,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_d_JaringanJalan_Fixed_1');
+        map.getPane('pane_d_JaringanJalan_Fixed_1').style.zIndex = 401;
+        map.getPane('pane_d_JaringanJalan_Fixed_1').style['mix-blend-mode'] = 'normal';
+        var layer_d_JaringanJalan_Fixed_1 = new L.geoJson(json_d_JaringanJalan_Fixed_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_d_JaringanJalan_Fixed_1',
+            layerName: 'layer_d_JaringanJalan_Fixed_1',
+            pane: 'pane_d_JaringanJalan_Fixed_1',
+            onEachFeature: pop_d_JaringanJalan_Fixed_1,
+            style: style_d_JaringanJalan_Fixed_1_0,
+        });
+        bounds_group.addLayer(layer_d_JaringanJalan_Fixed_1);
+        map.addLayer(layer_d_JaringanJalan_Fixed_1);
+        function pop_d_Halte_Surabaya_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Nama_Halte'] !== null ? autolinker.link(feature.properties['Nama_Halte'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Keterangan'] !== null ? autolinker.link(feature.properties['Keterangan'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Sumber'] !== null ? autolinker.link(feature.properties['Sumber'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Informasi Halte__Nama_Halte</th>\
+                        <td>' + (feature.properties['Informasi Halte__Nama_Halte'] !== null ? autolinker.link(feature.properties['Informasi Halte__Nama_Halte'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Informasi Halte__RUTE</th>\
+                        <td>' + (feature.properties['Informasi Halte__RUTE'] !== null ? autolinker.link(feature.properties['Informasi Halte__RUTE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Informasi Halte__Destinasi</th>\
+                        <td>' + (feature.properties['Informasi Halte__Destinasi'] !== null ? autolinker.link(feature.properties['Informasi Halte__Destinasi'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_d_Halte_Surabaya_2_0(feature) {
+            switch(String(feature.properties['Nama_Halte'])) {
+                case 'Halte Balai Kota':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(98,218,110,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Bambu Runcing':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(34,217,126,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Basra':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(67,184,233,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Cak Durasim A':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(72,134,215,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Cak Durasim B':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(201,35,110,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Embong Kemiri':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(236,194,121,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Embong Malang':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(111,220,223,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Embong Malang 2':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(38,72,240,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Embong Wungu':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(225,150,107,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Genteng Kali A':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(215,188,97,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Genteng Kali B':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(53,38,217,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Gondosuli':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(62,200,186,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Grand City':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(207,119,135,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Gubernur Suryo':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(232,102,90,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Jaksa Agung Suprapto':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(149,234,38,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Jimerto':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(149,234,38,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Kaliasin':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(43,100,233,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Kantor Dinas Pendidikan':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(239,226,103,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Kayoon 1A':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(234,72,80,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Kayoon 1B':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(233,93,194,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Kayoon 2A':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(206,119,170,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Kayoon 2B':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(48,226,42,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Ketabang Ngemplak':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(214,102,228,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte MMPA SIOLA A':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,94,217,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Monkasel':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(230,136,41,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Monumen Sudirman':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(127,224,108,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte MPP SIOLA B':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(209,65,25,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Ngemplak':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(75,82,212,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Pangsud':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(198,202,86,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Pemuda':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(166,48,238,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte PMI':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(166,48,238,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Simpang Dukuh':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(130,49,217,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Sindoro':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(185,123,205,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte SIOLA':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(46,138,209,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Slamet':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(91,182,200,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte SMPN 3':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(96,216,124,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Sono Kembang':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(62,216,118,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Sono Kembang 2':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(210,117,146,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Taman Apsari':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(108,209,31,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Taman Prestasi':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(209,229,105,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Tunjungan':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(110,41,236,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Urip Sumoharjo 1':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(89,55,213,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Wuni':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(91,231,199,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Yos Sudarso':
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(96,235,36,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_d_Halte_Surabaya_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(130,231,194,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_d_Halte_Surabaya_2');
+        map.getPane('pane_d_Halte_Surabaya_2').style.zIndex = 402;
+        map.getPane('pane_d_Halte_Surabaya_2').style['mix-blend-mode'] = 'normal';
+        var layer_d_Halte_Surabaya_2 = new L.geoJson(json_d_Halte_Surabaya_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_d_Halte_Surabaya_2',
+            layerName: 'layer_d_Halte_Surabaya_2',
+            pane: 'pane_d_Halte_Surabaya_2',
+            onEachFeature: pop_d_Halte_Surabaya_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_d_Halte_Surabaya_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_d_Halte_Surabaya_2);
+        map.addLayer(layer_d_Halte_Surabaya_2);
+        function pop_Halte_Surabaya_atribut_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Nama_Halte'] !== null ? autolinker.link(feature.properties['Nama_Halte'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Keterangan'] !== null ? autolinker.link(feature.properties['Keterangan'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Sumber'] !== null ? autolinker.link(feature.properties['Sumber'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Nama Halte</strong><br />' + (feature.properties['Nama Halte'] !== null ? autolinker.link(feature.properties['Nama Halte'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Rute Halte</strong><br />' + (feature.properties['Rute Halte'] !== null ? autolinker.link(feature.properties['Rute Halte'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Destinasi Halte</strong><br />' + (feature.properties['Destinasi Halte'] !== null ? autolinker.link(feature.properties['Destinasi Halte'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Foto'] !== null ? '<img src="images/' + String(feature.properties['Foto']).replace(/[\\\/:]/g, '_').trim() + '">' : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Halte_Surabaya_atribut_3_0(feature) {
+            switch(String(feature.properties['Nama_Halte'])) {
+                case 'Halte Balai Kota':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(98,218,110,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Bambu Runcing':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(34,217,126,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Basra':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(67,184,233,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Cak Durasim A':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(72,134,215,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Cak Durasim B':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(201,35,110,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Embong Kemiri':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(236,194,121,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Embong Malang':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(111,220,223,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Embong Malang 2':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(38,72,240,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Embong Wungu':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(225,150,107,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Genteng Kali A':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(215,188,97,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Genteng Kali B':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(53,38,217,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Gondosuli':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(62,200,186,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Grand City':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(207,119,135,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Gubernur Suryo':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(232,102,90,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Jaksa Agung Suprapto':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(149,234,38,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Jimerto':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(149,234,38,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Kaliasin':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(43,100,233,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Kantor Dinas Pendidikan':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(239,226,103,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Kayoon 1A':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(234,72,80,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Kayoon 1B':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(233,93,194,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Kayoon 2A':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(206,119,170,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Kayoon 2B':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(48,226,42,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Ketabang Ngemplak':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(214,102,228,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte MMPA SIOLA A':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,94,217,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Monkasel':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(230,136,41,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Monumen Sudirman':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(127,224,108,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte MPP SIOLA B':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(209,65,25,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Ngemplak':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(75,82,212,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Pangsud':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(198,202,86,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Pemuda':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(166,48,238,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte PMI':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(166,48,238,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Simpang Dukuh':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(130,49,217,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Sindoro':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(185,123,205,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte SIOLA':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(46,138,209,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Slamet':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(91,182,200,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte SMPN 3':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(96,216,124,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Sono Kembang':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(62,216,118,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Sono Kembang 2':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(210,117,146,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Taman Apsari':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(108,209,31,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Taman Prestasi':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(209,229,105,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Tunjungan':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(110,41,236,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Urip Sumoharjo 1':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(89,55,213,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Wuni':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(91,231,199,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Halte Yos Sudarso':
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(96,235,36,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_Halte_Surabaya_atribut_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(130,231,194,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Halte_Surabaya_atribut_3');
+        map.getPane('pane_Halte_Surabaya_atribut_3').style.zIndex = 403;
+        map.getPane('pane_Halte_Surabaya_atribut_3').style['mix-blend-mode'] = 'normal';
+        var layer_Halte_Surabaya_atribut_3 = new L.geoJson(json_Halte_Surabaya_atribut_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Halte_Surabaya_atribut_3',
+            layerName: 'layer_Halte_Surabaya_atribut_3',
+            pane: 'pane_Halte_Surabaya_atribut_3',
+            onEachFeature: pop_Halte_Surabaya_atribut_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Halte_Surabaya_atribut_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Halte_Surabaya_atribut_3);
+        map.addLayer(layer_Halte_Surabaya_atribut_3);
+        var baseMaps = {};
+        var overlaysTree = [
+            {label: 'Halte_Surabaya_atribut<br /><table><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteBalaiKota0.png" /></td><td>Halte Balai Kota</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteBambuRuncing1.png" /></td><td>Halte Bambu Runcing</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteBasra2.png" /></td><td>Halte Basra</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteCakDurasimA3.png" /></td><td>Halte Cak Durasim A</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteCakDurasimB4.png" /></td><td>Halte Cak Durasim B</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteEmbongKemiri5.png" /></td><td>Halte Embong Kemiri</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteEmbongMalang6.png" /></td><td>Halte Embong Malang</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteEmbongMalang27.png" /></td><td>Halte Embong Malang 2</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteEmbongWungu8.png" /></td><td>Halte Embong Wungu</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteGentengKaliA9.png" /></td><td>Halte Genteng Kali A</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteGentengKaliB10.png" /></td><td>Halte Genteng Kali B</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteGondosuli11.png" /></td><td>Halte Gondosuli</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteGrandCity12.png" /></td><td>Halte Grand City</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteGubernurSuryo13.png" /></td><td>Halte Gubernur Suryo</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteJaksaAgungSuprapto14.png" /></td><td>Halte Jaksa Agung Suprapto</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteJimerto15.png" /></td><td>Halte Jimerto</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteKaliasin16.png" /></td><td>Halte Kaliasin</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteKantorDinasPendidikan17.png" /></td><td>Halte Kantor Dinas Pendidikan</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteKayoon1A18.png" /></td><td>Halte Kayoon 1A</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteKayoon1B19.png" /></td><td>Halte Kayoon 1B</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteKayoon2A20.png" /></td><td>Halte Kayoon 2A</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteKayoon2B21.png" /></td><td>Halte Kayoon 2B</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteKetabangNgemplak22.png" /></td><td>Halte Ketabang Ngemplak</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteMMPASIOLAA23.png" /></td><td>Halte MMPA SIOLA A</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteMonkasel24.png" /></td><td>Halte Monkasel</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteMonumenSudirman25.png" /></td><td>Halte Monumen Sudirman</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteMPPSIOLAB26.png" /></td><td>Halte MPP SIOLA B</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteNgemplak27.png" /></td><td>Halte Ngemplak</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HaltePangsud28.png" /></td><td>Halte Pangsud</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HaltePemuda29.png" /></td><td>Halte Pemuda</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HaltePMI30.png" /></td><td>Halte PMI</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteSimpangDukuh31.png" /></td><td>Halte Simpang Dukuh</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteSindoro32.png" /></td><td>Halte Sindoro</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteSIOLA33.png" /></td><td>Halte SIOLA</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteSlamet34.png" /></td><td>Halte Slamet</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteSMPN335.png" /></td><td>Halte SMPN 3</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteSonoKembang36.png" /></td><td>Halte Sono Kembang</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteSonoKembang237.png" /></td><td>Halte Sono Kembang 2</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteTamanApsari38.png" /></td><td>Halte Taman Apsari</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteTamanPrestasi39.png" /></td><td>Halte Taman Prestasi</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteTunjungan40.png" /></td><td>Halte Tunjungan</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteUripSumoharjo141.png" /></td><td>Halte Urip Sumoharjo 1</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteWuni42.png" /></td><td>Halte Wuni</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_HalteYosSudarso43.png" /></td><td>Halte Yos Sudarso</td></tr><tr><td style="text-align: center;"><img src="legend/Halte_Surabaya_atribut_3_44.png" /></td><td></td></tr></table>', layer: layer_Halte_Surabaya_atribut_3},
+            {label: 'd_Halte_Surabaya<br /><table><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteBalaiKota0.png" /></td><td>Halte Balai Kota</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteBambuRuncing1.png" /></td><td>Halte Bambu Runcing</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteBasra2.png" /></td><td>Halte Basra</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteCakDurasimA3.png" /></td><td>Halte Cak Durasim A</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteCakDurasimB4.png" /></td><td>Halte Cak Durasim B</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteEmbongKemiri5.png" /></td><td>Halte Embong Kemiri</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteEmbongMalang6.png" /></td><td>Halte Embong Malang</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteEmbongMalang27.png" /></td><td>Halte Embong Malang 2</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteEmbongWungu8.png" /></td><td>Halte Embong Wungu</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteGentengKaliA9.png" /></td><td>Halte Genteng Kali A</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteGentengKaliB10.png" /></td><td>Halte Genteng Kali B</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteGondosuli11.png" /></td><td>Halte Gondosuli</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteGrandCity12.png" /></td><td>Halte Grand City</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteGubernurSuryo13.png" /></td><td>Halte Gubernur Suryo</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteJaksaAgungSuprapto14.png" /></td><td>Halte Jaksa Agung Suprapto</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteJimerto15.png" /></td><td>Halte Jimerto</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteKaliasin16.png" /></td><td>Halte Kaliasin</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteKantorDinasPendidikan17.png" /></td><td>Halte Kantor Dinas Pendidikan</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteKayoon1A18.png" /></td><td>Halte Kayoon 1A</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteKayoon1B19.png" /></td><td>Halte Kayoon 1B</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteKayoon2A20.png" /></td><td>Halte Kayoon 2A</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteKayoon2B21.png" /></td><td>Halte Kayoon 2B</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteKetabangNgemplak22.png" /></td><td>Halte Ketabang Ngemplak</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteMMPASIOLAA23.png" /></td><td>Halte MMPA SIOLA A</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteMonkasel24.png" /></td><td>Halte Monkasel</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteMonumenSudirman25.png" /></td><td>Halte Monumen Sudirman</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteMPPSIOLAB26.png" /></td><td>Halte MPP SIOLA B</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteNgemplak27.png" /></td><td>Halte Ngemplak</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HaltePangsud28.png" /></td><td>Halte Pangsud</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HaltePemuda29.png" /></td><td>Halte Pemuda</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HaltePMI30.png" /></td><td>Halte PMI</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteSimpangDukuh31.png" /></td><td>Halte Simpang Dukuh</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteSindoro32.png" /></td><td>Halte Sindoro</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteSIOLA33.png" /></td><td>Halte SIOLA</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteSlamet34.png" /></td><td>Halte Slamet</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteSMPN335.png" /></td><td>Halte SMPN 3</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteSonoKembang36.png" /></td><td>Halte Sono Kembang</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteSonoKembang237.png" /></td><td>Halte Sono Kembang 2</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteTamanApsari38.png" /></td><td>Halte Taman Apsari</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteTamanPrestasi39.png" /></td><td>Halte Taman Prestasi</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteTunjungan40.png" /></td><td>Halte Tunjungan</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteUripSumoharjo141.png" /></td><td>Halte Urip Sumoharjo 1</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteWuni42.png" /></td><td>Halte Wuni</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_HalteYosSudarso43.png" /></td><td>Halte Yos Sudarso</td></tr><tr><td style="text-align: center;"><img src="legend/d_Halte_Surabaya_2_44.png" /></td><td></td></tr></table>', layer: layer_d_Halte_Surabaya_2},
+            {label: '<img src="legend/d_JaringanJalan_Fixed_1.png" /> d_JaringanJalan_Fixed', layer: layer_d_JaringanJalan_Fixed_1},
+            {label: "Positron (retina)", layer: layer_Positronretina_0},]
+        var lay = L.control.layers.tree(null, overlaysTree,{
+            //namedToggle: true,
+            //selectorBack: false,
+            //closedSymbol: '&#8862; &#x1f5c0;',
+            //openedSymbol: '&#8863; &#x1f5c1;',
+            //collapseAll: 'Collapse all',
+            //expandAll: 'Expand all',
+            collapsed: false, 
+        });
+        lay.addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
